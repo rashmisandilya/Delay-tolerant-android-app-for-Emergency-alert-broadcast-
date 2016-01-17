@@ -1,0 +1,96 @@
+I"(function() {
+  var directives,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  directives = angular.module('directives');
+
+  directives.directive('chatpanel', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        grps: '='
+      },
+      templateUrl: 'chat.html',
+      controller: function($scope, $routeParams, $http, $location, $modal, GroupService, Flash) {
+        $scope.messages = [];
+        $scope.selected = '';
+        $scope["continue"] = 0;
+        $http.post('/messages/get_messages', {
+          'user_id': $routeParams.id
+        }).success(function(data) {
+          return $scope.messages = data.slice(-4);
+        });
+        $scope.$watch('grps', function(value) {
+          if (value) {
+            $scope.selected = value[0];
+            return $scope.groupList = value;
+          }
+        });
+        $scope.sendMsg = function() {
+          console.log($scope.msg);
+          console.log($scope.selected);
+          $scope.reg_ids = [];
+          $http.get('/groups/' + $scope.selected.id + '/get_members').success(function(data) {
+            var i, len, ref, user;
+            for (i = 0, len = data.length; i < len; i++) {
+              user = data[i];
+              if (user.reg_id && (ref = user.reg_id, indexOf.call($scope.reg_ids, ref) < 0)) {
+                $scope.reg_ids.push(user.reg_id);
+              }
+            }
+            return $scope["continue"] = 1;
+          });
+          return $scope.$watch('continue', function(value) {
+            var to_gcm_msg, to_send_msg;
+            if (value === 1) {
+              console.log($scope.reg_ids);
+              to_send_msg = {
+                'user_id': $routeParams.id,
+                'heading': $scope.msg.title,
+                'content': $scope.msg.content
+              };
+              to_gcm_msg = {
+                'heading': $scope.msg.title,
+                'content': $scope.msg.content,
+                'reg_ids': $scope.reg_ids
+              };
+              $http.post('/messages', to_send_msg).success(function(data) {
+                if ($scope.messages.length >= 4) {
+                  $scope.messages.shift();
+                }
+                return $scope.messages.push(data);
+              });
+              $http.post('/users/' + $routeParams.id + '/sendGCM', {
+                'data': to_gcm_msg
+              }).success(function(response) {
+                return console.log(response);
+              });
+              $scope.msg.title = '';
+              $scope.msg.content = '';
+              return $scope["continue"] = 0;
+            }
+          });
+        };
+        $scope.select = function(arg) {
+          return $scope.selected = arg;
+        };
+        return $scope.submit = function() {
+          if ($scope.groupName) {
+            return $http.post('/groups', {
+              'group_name': $scope.groupName
+            }).success(function(data) {
+              console.log(data);
+              $scope.groupName = '';
+              return GroupService.list().success(function(data) {
+                Flash.create('success', 'New Group Created!', 'flashMsg');
+                return $scope.groupList = data;
+              });
+            });
+          }
+        };
+      }
+    };
+  });
+
+}).call(this);
+:ET

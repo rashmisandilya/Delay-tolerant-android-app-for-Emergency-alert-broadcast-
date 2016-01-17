@@ -1,0 +1,31 @@
+I"¶(function() {
+  var controllers;
+
+  controllers = angular.module('controllers');
+
+  controllers.controller("loginModalCtrl", [
+    '$scope', '$http', '$location', 'Flash', function($scope, $http, $location, Flash) {
+      return $scope.login = function() {
+        if ($scope.user) {
+          if ($scope.user.username && $scope.user.password) {
+            return $http.post('/login', {
+              username: $scope.user.username,
+              password: $scope.user.password
+            }).success(function(data, status, headers, config) {
+              if (angular.isString(data)) {
+                return Flash.create('danger', data, 'flashMsg');
+              } else {
+                $scope.dismiss();
+                return $location.url('/users/' + data.id);
+              }
+            });
+          }
+        } else {
+          return Flash.create('danger', 'Incomplete Form!', 'flashMsg');
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+:ET

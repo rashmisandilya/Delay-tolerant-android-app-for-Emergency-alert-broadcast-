@@ -1,0 +1,18 @@
+I"9(function() {
+  var services;
+
+  services = angular.module('services');
+
+  services.service('UserService', function($http) {
+    return {
+      list: function() {
+        return $http.get('/users');
+      },
+      get: function(id) {
+        return $http.get('/users/' + id);
+      }
+    };
+  });
+
+}).call(this);
+:ET

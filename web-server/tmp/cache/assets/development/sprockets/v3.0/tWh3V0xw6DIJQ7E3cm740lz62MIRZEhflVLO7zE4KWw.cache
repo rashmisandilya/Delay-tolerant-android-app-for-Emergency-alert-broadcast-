@@ -1,0 +1,38 @@
+I"K(function() {
+  var controllers;
+
+  controllers = angular.module('controllers');
+
+  controllers.controller("signupModalCtrl", [
+    '$scope', '$http', '$location', 'Flash', function($scope, $http, $location, Flash) {
+      return $scope.signup = function() {
+        if ($scope.user) {
+          if ($scope.user.username && $scope.user.password && $scope.user.degreeType && $scope.user.degreeType) {
+            if ($scope.user.password === $scope.user.confirmation) {
+              console.log($scope.user);
+              return $http.post('/signup', {
+                username: $scope.user.username,
+                password: $scope.user.password,
+                degreeType: $scope.user.degreeType,
+                department: $scope.user.department
+              }).success(function(data, status, headers, config) {
+                if (angular.isString(data)) {
+                  return Flash.create('danger', data, 'flashMsg');
+                } else {
+                  $scope.dismiss();
+                  return $location.url('/users/' + data.id);
+                }
+              });
+            } else {
+              return Flash.create('danger', 'Unmatched Password!', 'flashMsg');
+            }
+          }
+        } else {
+          return Flash.create('danger', 'Incomplete Form!', 'flashMsg');
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+:ET

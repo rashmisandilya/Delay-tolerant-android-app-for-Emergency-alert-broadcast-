@@ -1,0 +1,56 @@
+I"¸(function() {
+  var directives;
+
+  directives = angular.module('directives');
+
+  directives.directive('adduserstogroups', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'doubleList.html',
+      controller: function($scope, $http, GroupService, Flash) {
+        $scope.selection = [];
+        $scope.update = function() {
+          var group, i, len, ref, results;
+          $scope.selection = [];
+          ref = $scope.groups;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            group = ref[i];
+            if (group.id === $scope.selectedGroup.id) {
+              $http.get('/groups/' + group.id + '/get_members').success(function(data) {
+                var j, len1, results1, user;
+                results1 = [];
+                for (j = 0, len1 = data.length; j < len1; j++) {
+                  user = data[j];
+                  results1.push($scope.selection.push(user.id));
+                }
+                return results1;
+              });
+              break;
+            } else {
+              results.push(void 0);
+            }
+          }
+          return results;
+        };
+        return $scope.toggleSelection = function(id) {
+          var idx;
+          idx = $scope.selection.indexOf(id);
+          if (idx > -1) {
+            $scope.selection.splice(idx, 1);
+            return $http.post('/users/' + id + '/leave_group', {
+              'group_id': $scope.selectedGroup.id
+            });
+          } else {
+            $scope.selection.push(id);
+            return $http.post('/users/' + id + '/join_group', {
+              'group_id': $scope.selectedGroup.id
+            });
+          }
+        };
+      }
+    };
+  });
+
+}).call(this);
+:ET

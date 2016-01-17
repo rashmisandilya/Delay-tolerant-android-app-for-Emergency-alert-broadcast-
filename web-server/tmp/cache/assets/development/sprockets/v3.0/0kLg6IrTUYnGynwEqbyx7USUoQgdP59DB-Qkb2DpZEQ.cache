@@ -1,0 +1,22 @@
+I"3(function() {
+  var controllers;
+
+  controllers = angular.module('controllers');
+
+  controllers.controller("UserCtrl", function($scope, $modal, $routeParams, GroupService, UserService) {
+    GroupService.list().success(function(data) {
+      return $scope.groups = data;
+    });
+    UserService.list().success(function(data) {
+      return $scope.users = data;
+    });
+    return $scope.groupModal = function() {
+      return $scope.modalInstance = $modal.open({
+        templateUrl: 'editgroup.html',
+        scope: $scope
+      });
+    };
+  });
+
+}).call(this);
+:ET

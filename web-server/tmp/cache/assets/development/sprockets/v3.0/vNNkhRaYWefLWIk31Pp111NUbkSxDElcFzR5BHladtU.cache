@@ -1,0 +1,32 @@
+I"„(function() {
+  var controllers;
+
+  controllers = angular.module('controllers');
+
+  controllers.controller("MainPageCtrl", [
+    '$scope', '$modal', function($scope, $modal) {
+      $scope.degreeSelection = ['Undergraduate', 'Graduate'];
+      $scope.departmentSelection = ['CSC', 'ECE'];
+      $scope.modalInstance = void 0;
+      $scope.loginModal = function() {
+        return $scope.modalInstance = $modal.open({
+          templateUrl: 'loginmodal.html',
+          controller: 'loginModalCtrl',
+          scope: $scope
+        });
+      };
+      $scope.signupModal = function() {
+        return $scope.modalInstance = $modal.open({
+          templateUrl: 'signupmodal.html',
+          controller: 'signupModalCtrl',
+          scope: $scope
+        });
+      };
+      return $scope.dismiss = function() {
+        return $scope.modalInstance.dismiss("cancel");
+      };
+    }
+  ]);
+
+}).call(this);
+:ET

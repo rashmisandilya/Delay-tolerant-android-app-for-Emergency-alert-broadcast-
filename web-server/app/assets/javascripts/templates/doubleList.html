@@ -1,0 +1,54 @@
+<div class="col-xs-6">
+<h4 class="sub-header">Groups</h4>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-xs-12">GroupName</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td class="col-xs-12">
+          <select class="form-control" 
+                  ng-model="selectedGroup" 
+                  ng-options="group.group_name for group in groups" 
+                  ng-change="update()">
+          </select>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="col-xs-6">
+<h4 class="sub-header">Users</h4>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-xs-1">#</th>
+          <th class="col-xs-5">Username</th>
+          <th class="col-xs-6">Degree Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat='user in users'>
+          <td class="col-xs-1"><input 
+                                type="checkbox"
+                                value={{user.id}}
+                                ng-checked="selection.indexOf(user.id) > -1"
+                                ng-click="toggleSelection(user.id)"
+                                ></td>
+          <td class="col-xs-5">{{user.username}}</td>
+          <td class="col-xs-6">{{user.degreeType}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  </div><!-- /.col-xs-6 -->
+

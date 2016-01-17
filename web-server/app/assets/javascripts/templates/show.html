@@ -1,0 +1,13 @@
+<div flash-message="5000"></div> 
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="nav navbar-nav">
+    <button id="grt" ng-click='groupModal()' class="btn btn-primary">Edit Groups Members</button>
+    </div>
+    <div class="nav navbar-nav navbar-right">
+    <button type="button" ng-click='logout()' class="btn btn-danger navbar-btn" id="logoutBtn">Log Out</button>
+    </div>
+  </div>
+  </nav>
+<hr>
+<chatpanel grps="groups" users="users"></chatpanel>

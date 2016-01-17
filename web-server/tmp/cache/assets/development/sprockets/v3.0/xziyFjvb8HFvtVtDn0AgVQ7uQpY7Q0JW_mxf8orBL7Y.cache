@@ -1,0 +1,15 @@
+I"î(function() {
+  var services;
+
+  services = angular.module('services');
+
+  services.service('GroupService', function($http) {
+    return {
+      list: function() {
+        return $http.get('/groups');
+      }
+    };
+  });
+
+}).call(this);
+:ET

@@ -1,0 +1,39 @@
+<div class="container">
+<div flash-message="5000"></div> 
+  <div class="row">
+
+    <div class="main">
+
+      <h3>Admin Sign Up</a></h3>
+      <form role="form">
+        <div class="form-group">
+          <label for="inputUsernameEmail">Username</label>
+          <input type="text" ng-model="user.username" class="form-control" id="inputUsernameEmail">
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" ng-model="user.password" class="form-control" id="inputPassword">
+        </div>
+        <div class="form-group">
+          <label for="inputConfirmation">Confirmation</label>
+          <input type="password" ng-model="user.confirmation" class="form-control" id="inputConfirmation">
+        </div>
+        <div class="form-group">
+          <label for="inputDegreeType">Degree Type</label>
+          <select ng-model="user.degreeType" class="form-control" ng-options="d for d in degreeSelection" id="inputDegreeType"></select>
+        </div>
+        <div class="form-group">
+          <label for="inputDepartment">Department</label>
+          <select type="password" ng-model="user.department" ng-options="d for d in departmentSelection" class="form-control" id="inputDepartment"></select>
+        </div>
+        <button ng-click='signup()' id='signupBtn' type="submit" class="btn btn btn-primary pull-right">
+          Sign Up
+        </button>
+      </form>
+    
+    </div>
+    
+  </div>
+
+  <!-- <pre>form = {{user | json}}</pre> -->
+</div>
